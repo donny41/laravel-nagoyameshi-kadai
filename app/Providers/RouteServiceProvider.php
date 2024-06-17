@@ -21,6 +21,7 @@ class RouteServiceProvider extends ServiceProvider
     // 初期設定ここから
     // public const HOME = '/dashboard';
     public const HOME = '/';
+    public const ADMIN_HOME = 'admin/home';
     // 初期設定ここまで
 
 

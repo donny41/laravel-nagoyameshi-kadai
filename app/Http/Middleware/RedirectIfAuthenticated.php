@@ -21,6 +21,11 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                // 管理者としてログイン済みの状態でログインページにアクセスした場合は、管理者用のトップページにリダイレクトさせたい
+                if ($guard === 'admin') {
+                    return redirect(RouteServiceProvider::ADMIN_HOME);
+                }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

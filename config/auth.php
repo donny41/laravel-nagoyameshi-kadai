@@ -35,11 +35,21 @@ return [
     |
     */
 
+    /*
+    'guards'ですが、これはログイン機構（ログインの仕組み、メカニズム）の種類を表しています。「ログイン画面の数だけ必要」と考えるとわかりやすいです。
+    */
+    /*
+    'guards'内の'driver'には「認証状態をどのように管理するか」を指定しますが、Webアプリでは一般的にセッションで認証状態を管理するので'session'を指定します
+    */
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ]
     ],
 
     /*
@@ -59,11 +69,21 @@ return [
     |
     */
 
+    /*
+    'provider'には「認証に使うユーザー情報をどのように取得するか」を指定します。一般ユーザーには'users'、管理者には'admins'を指定していますが、それらの内容は以下の'providers'で設定されています。
+    */
+    /*
+    'users'の場合はEloquent ORMのUserモデル、'admins'の場合はEloquent ORMのAdminモデルを介してユーザー情報を取得するように指定しています
+    */
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
