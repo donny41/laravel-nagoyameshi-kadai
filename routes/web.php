@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RestaurantController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 
@@ -34,4 +35,7 @@ Route::group([
     Route::get('users', [Admin\UserController::class, 'index'])->name('users.index');
     // {user}の名称は show.blade.php 内で指定している $user を入れる
     Route::get('users/{user}', [Admin\UserController::class, 'show'])->name('users.show');
+
+    // Restaurant
+    Route::resource('restaurants', RestaurantController::class);
 });
