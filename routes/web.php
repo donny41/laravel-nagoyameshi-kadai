@@ -31,4 +31,7 @@ Route::group([
     'middleware' => 'auth:admin'
 ], function () {
     Route::get('home', [Admin\HomeController::class, 'index'])->name('home');
+    Route::get('users', [Admin\UserController::class, 'index'])->name('users.index');
+    // {user}の名称は show.blade.php 内で指定している $user を入れる
+    Route::get('users/{user}', [Admin\UserController::class, 'show'])->name('users.show');
 });
