@@ -30,10 +30,10 @@ class UserController extends Controller
         $keyword = $request->keyword;
 
         if ($keyword !== null) {
-            $users = User::where("name", "like", "%{$keyword}%")->sortable($sort_query)->orderBy('created_at', 'desc')->paginate(20);
+            $users = User::where("name", "like", "%{$keyword}%")->sortable($sort_query)->orderBy('id', 'asc')->paginate(20);
             $total = $users->total();
         } else {
-            $users = User::sortable($sort_query)->orderBy('created_at', 'desc')->paginate(20);
+            $users = User::sortable($sort_query)->orderBy('id', 'asc')->paginate(20);
             $total = $users->total();
         }
 
