@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 
@@ -38,4 +39,5 @@ Route::group([
 
     // Restaurant
     Route::resource('restaurants', RestaurantController::class);
+    Route::resource('categories', CategoryController::class);
 });
