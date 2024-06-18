@@ -10,9 +10,6 @@ use App\Models\Admin;
 
 class UserTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
     use RefreshDatabase;
 
     /*
