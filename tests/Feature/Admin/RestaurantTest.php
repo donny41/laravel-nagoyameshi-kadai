@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Restaurant;
+use App\Models\Category;
 
 class RestaurantTest extends TestCase
 {
@@ -130,7 +131,9 @@ class RestaurantTest extends TestCase
     public function test_admin_can_store_restaurant()
     {
         $admin = Admin::factory()->create();
-        $restaurant = [
+        $categories_array = Category::factory()->count(3)->create()->pluck('id')->toArray();
+
+        $restaurant_data = [
             'name' => 'あ',
             // 'image' => '',
             'description' => 'あ',
@@ -141,9 +144,13 @@ class RestaurantTest extends TestCase
             'opening_time' => '10:00:00',
             'closing_time' => '19:00:00',
             'seating_capacity' => '50',
+            'category_ids' => $categories_array,
         ];
-        $response = $this->actingAs($admin, 'admin')->post(route('admin.restaurants.store', $restaurant));
-        $this->assertDatabaseHas('restaurants', $restaurant);
+
+        $response = $this->actingAs($admin, 'admin')->post(route('admin.restaurants.store', $restaurant_data));
+        unset($restaurant_data['category_ids']) ;
+        $this->assertDatabaseHas('restaurants', $restaurant_data);
+        $this->assertDatabaseHas('category_restaurant', ['category_id' => $categories_array[0]]);
         $response->assertRedirect(route('admin.restaurants.index'));
     }
 
@@ -213,6 +220,7 @@ class RestaurantTest extends TestCase
     public function test_admin_can_update_restaurant()
     {
         $admin = Admin::factory()->create();
+        $categories_array = Category::factory()->count(3)->create()->pluck('id')->toArray();
         $old_restaurant = Restaurant::factory()->create();
         $new_restaurant = [
             'name' => 'あ',
@@ -225,9 +233,12 @@ class RestaurantTest extends TestCase
             'opening_time' => '10:00:00',
             'closing_time' => '19:00:00',
             'seating_capacity' => '50',
+            'category_ids' => $categories_array,
         ];
         $response = $this->actingAs($admin, 'admin')->patch(route('admin.restaurants.update', $old_restaurant), $new_restaurant);
+        unset($new_restaurant['category_ids']) ;
         $this->assertDatabaseHas('restaurants', $new_restaurant);
+        $this->assertDatabaseHas('category_restaurant', ['category_id' => $categories_array[0]]);
         $response->assertRedirect(route('admin.restaurants.index'));
     }
 
@@ -256,4 +267,8 @@ class RestaurantTest extends TestCase
         $this->assertModelMissing($restaurant);
         $response->assertRedirect(route('admin.restaurants.index'));
     }
+
+    // カテゴリを追加できる
+
+
 }
