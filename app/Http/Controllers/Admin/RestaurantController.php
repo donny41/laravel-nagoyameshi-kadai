@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Restaurant;
-use Illuminate\Http\Request;
+use App\Models\RegularHoliday;
 
 class RestaurantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $keyword = $request->keyword;
@@ -29,19 +27,13 @@ class RestaurantController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create(Category $category)
     public function create()
     {
         $categories = Category::all();
-        return view('admin.restaurants.create', compact('categories'));
+        $regular_holidays = RegularHoliday::all();
+        return view('admin.restaurants.create', compact('categories','regular_holidays'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -76,31 +68,26 @@ class RestaurantController extends Controller
         $category_ids = array_filter($request->input('category_ids'));
         $restaurant->categories()->sync($category_ids);
 
+        $regular_holiday_ids = array_filter($request->input('regular_holiday_ids'));
+        $restaurant->regular_holidays()->sync($regular_holiday_ids);
+
         return redirect()->route('admin.restaurants.index')->with('flash_message', '店舗を登録しました。');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Restaurant $restaurant)
     {
         return view('admin.restaurants.show', compact('restaurant'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Restaurant $restaurant)
     {
         $categories = Category::all();
         $category_ids = $restaurant->categories->pluck('id')->toArray();
+        $regular_holidays = RegularHoliday::all();
 
-        return view('admin.restaurants.edit', compact('restaurant', 'categories', 'category_ids'));
+        return view('admin.restaurants.edit', compact('restaurant', 'categories', 'category_ids','regular_holidays'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Restaurant $restaurant)
     {
         $request->validate([
@@ -136,12 +123,12 @@ class RestaurantController extends Controller
         $category_ids = array_filter(($request->input('category_ids')));
         $restaurant->categories()->sync($category_ids);
 
+        $regular_holiday_ids = array_filter($request->input('regular_holiday_ids'));
+        $restaurant->regular_holidays()->sync($regular_holiday_ids);
+
         return redirect()->route('admin.restaurants.index')->with('flash_message', '店舗情報を更新しました。');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
