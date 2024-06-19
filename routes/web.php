@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\RestaurantController;
-use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\TermController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +39,8 @@ Route::group([
     // {user}の名称は show.blade.php 内で指定している $user を入れる
     Route::get('users/{user}', [Admin\UserController::class, 'show'])->name('users.show');
 
-    // Restaurant
     Route::resource('restaurants', RestaurantController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('company', CompanyController::class);
+    Route::resource('terms', TermController::class);
 });
