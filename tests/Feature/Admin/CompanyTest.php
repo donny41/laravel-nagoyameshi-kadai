@@ -35,7 +35,7 @@ class CompanyTest extends TestCase
         $response->assertStatus(200);
     }
 
-
+    // edit
     public function test_guest_cannot_edit_company()
     {
         $company = Company::factory()->create();
@@ -57,7 +57,7 @@ class CompanyTest extends TestCase
         $response->assertStatus(200);
     }
 
-
+    // update 
     public function test_guest_cannot_update_company()
     {
         $old_company = Company::factory()->create();
@@ -114,8 +114,4 @@ class CompanyTest extends TestCase
         $response->assertRedirect(route('admin.company.index'));
     }
 
-
-
-
-    
 }

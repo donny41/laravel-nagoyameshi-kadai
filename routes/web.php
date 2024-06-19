@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,14 @@ Route::group([
     Route::resource('terms', TermController::class);
 });
 
-// 管理者としてログインしていない状態でのみアクセスできる
+// guest:admin = 管理者として非認証のみ
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+});
+
+// auth:web = WEB（ユーザー）として認証のみ
+Route::group(['middleware' => 'auth:web'], function () {
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::patch('/user/{user}', [UserController::class, 'update'])->name('user.update');
 });
