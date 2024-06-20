@@ -90,9 +90,9 @@ class UserTest extends TestCase
     // update 
     public function test_guest_cannot_update_user()
     {
-        $old_user = User::factory()->create();
-        $old_user_id = $old_user->id;
-        User::find($old_user_id)->update(['name' => 'before']);
+        $old_user = User::factory()->create([
+            'name' => 'before',
+        ]);
         $new_user_data = [
             'name' => 'after',
             'kana' => 'ア',
@@ -106,8 +106,8 @@ class UserTest extends TestCase
         $response = $this->patch(route('user.update', $old_user), $new_user_data);
 
         // DBが更新されたかチェック
-        // $this->assertEquals(User::find($old_user_id)->name, $new_user_data['name']);
-        $this->assertNotEquals(User::find($old_user_id)->name, $new_user_data['name']);
+        // $this->assertEquals(User::find($old_user->id)->name, $new_user_data['name']);
+        $this->assertNotEquals(User::find($old_user->id)->name, $new_user_data['name']);
 
         // $response->assertRedirect(route('user.index'));
         $response->assertRedirect('/login');
