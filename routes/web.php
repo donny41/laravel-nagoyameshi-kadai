@@ -9,6 +9,9 @@ use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestaurantController as UR;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Middleware\Subscribed;
+use App\Http\Middleware\NotSubscribed;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,15 +51,28 @@ Route::group([
     Route::resource('terms', TermController::class);
 });
 
-// guest:admin = 管理者として非認証のみ
+// guest:adminの挙動: adminはadmin.homeへリダイレクト、それ以外はOK。
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/restaurants', [UR::class, 'index'])->name('restaurants.index');
-    Route::get('/restaurants/{restaurant}', [UR::class, 'show'])->name('restaurants.show');});
+    Route::get('/restaurants/{restaurant}', [UR::class, 'show'])->name('restaurants.show');
+});
 
 // auth:web = WEB（ユーザー）として認証のみ
 Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::patch('/user/{user}', [UserController::class, 'update'])->name('user.update');
+
+    Route::group(['middleware' => 'not_subscribed'], function () {
+        Route::get('/subscription/create', [SubscriptionController::class, 'create'])->name('subscription.create');
+        Route::post('/subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
+    });
+
+    Route::group(['middleware' => 'subscribed'], function () {
+        Route::get('/subscription/edit', [SubscriptionController::class, 'edit'])->name('subscription.edit');
+        Route::patch('/subscription/update', [SubscriptionController::class, 'update'])->name('subscription.update');
+        Route::get('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+        Route::delete('/subscription/destroy', [SubscriptionController::class, 'destroy'])->name('subscription.destroy');
+    });
 });

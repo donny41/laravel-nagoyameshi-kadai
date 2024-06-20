@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -12,6 +13,13 @@ class UserController extends Controller
     //index edit update
     public function index()
     {
+        // 検証中 サブスクチェック
+        if (Auth::user()->subscribed('premium_plan')) {
+            Log::debug("サブスクあり");
+        } else {
+            Log::debug("サブスクなし");
+        }
+
         $user = Auth::user();
 
         return view('user.index', compact('user'));
