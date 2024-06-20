@@ -52,7 +52,7 @@ class RestaurantController extends Controller
                 where("lowest_price", "<=", $price)
                 ->sortable($sort_query)
                 ->paginate(15);
-        } 
+        }
 
         $total = $restaurants->total();
 
@@ -69,7 +69,13 @@ class RestaurantController extends Controller
                 'total'
             )
         );
-
-
     }
+
+    public function show(Restaurant $restaurant)
+    {
+        return view('restaurants.show', compact('restaurant'));
+    }
+
+
+
 }

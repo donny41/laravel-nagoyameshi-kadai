@@ -52,7 +52,7 @@ Route::group([
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/restaurants', [UR::class, 'index'])->name('restaurants.index');
-});
+    Route::get('/restaurants/{restaurant}', [UR::class, 'show'])->name('restaurants.show');});
 
 // auth:web = WEB（ユーザー）として認証のみ
 Route::group(['middleware' => 'auth:web'], function () {

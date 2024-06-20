@@ -31,6 +31,30 @@ class RestaurantTest extends TestCase
         $admin = Admin::factory()->create();
         $response = $this->actingAs($admin, 'admin')->get(route('restaurants.index'));
         $response->assertRedirect(route('admin.home'));
-
     }
+
+    // show
+    public function test_guest_can_access_restaurant_show()
+    {
+        $restaurant = Restaurant::factory()->create();
+        $response = $this->get(route('restaurants.show',$restaurant));
+        $response->assertStatus(200);
+    }
+
+    public function test_user_can_access_restaurant_show()
+    {
+        $restaurant = Restaurant::factory()->create();
+        $user = User::factory()->create();
+        $response = $this->actingAs($user, 'web')->get(route('restaurants.show',$restaurant));
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_cannot_access_restaurant_show()
+    {
+        $restaurant = Restaurant::factory()->create();
+        $admin = Admin::factory()->create();
+        $response = $this->actingAs($admin, 'admin')->get(route('restaurants.show',$restaurant));
+        $response->assertRedirect(route('admin.home'));
+    }
+
 }
