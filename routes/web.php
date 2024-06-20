@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RestaurantController as UR;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::group([
 // guest:admin = 管理者として非認証のみ
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/restaurants', [UR::class, 'index'])->name('restaurants.index');
 });
 
 // auth:web = WEB（ユーザー）として認証のみ
