@@ -9,6 +9,7 @@ use App\Models\RegularHoliday;
 use Kyslik\ColumnSortable\Sortable;
 use App\Models\Review;
 use App\Models\Reservation;
+use App\Models\User;
 
 class Restaurant extends Model
 {
@@ -40,6 +41,11 @@ class Restaurant extends Model
 
     public function popularSortable($query, $direction) {
         return $query->withCount('reservations')->orderBy('reservations_count', $direction);
+    }
+
+    public function favorited_users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
 }

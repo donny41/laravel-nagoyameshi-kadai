@@ -14,6 +14,7 @@ use App\Http\Middleware\Subscribed;
 use App\Http\Middleware\NotSubscribed;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,12 @@ Route::group(['middleware' => 'auth:web'], function () {
         Route::get('/restaurants/{restaurant}/reservations/create', [ReservationController::class, 'create'])->name('restaurants.reservations.create');
         Route::post('/restaurants/{restaurant}/reservations', [ReservationController::class, 'store'])->name('restaurants.reservations.store');
         Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
+        // お気に入り機能
+        Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+        // Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+        Route::post('/restaurants/{restaurant}/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+        Route::delete('favorites/{favorite}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
 
     });
 });

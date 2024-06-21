@@ -11,6 +11,7 @@ use Kyslik\ColumnSortable\Sortable;
 use Laravel\Cashier\Billable;
 use App\Models\Review;
 use App\Models\Reservation;
+use App\Models\Restaurant;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -61,6 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function favorite_restaurants()
+    {
+        return $this->belongsToMany(Restaurant::class)->withTimestamps();
     }
 
     
