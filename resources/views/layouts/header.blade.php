@@ -6,8 +6,7 @@
                 NAGOYAMESHI
             </div>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -22,8 +21,7 @@
                 <!-- Authentication Links -->
                 @if (Auth::guard('admin')->check())
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             管理者メニュー
                         </a>
 
@@ -36,7 +34,7 @@
                             <a class="dropdown-item" href="{{ route('admin.terms.index') }}">利用規約</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('admin.logout') }}"
-                                onclick="event.preventDefault();
+                            onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
                                 ログアウト
                             </a>
@@ -61,8 +59,7 @@
                         @endif
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
 
@@ -70,7 +67,7 @@
                                 <a class="dropdown-item" href="{{ route('user.index') }}">会員情報</a>
 
                                 @if (Auth::user()->subscribed('premium_plan'))
-                                    <a class="dropdown-item" href="#">予約一覧</a>
+                                    <a class="dropdown-item" href="{{ route('reservations.index') }}">予約一覧</a>
                                     <a class="dropdown-item" href="#">お気に入り一覧</a>
                                     <a class="dropdown-item" href="{{ route('subscription.edit') }}">お支払い方法</a>
                                     <a class="dropdown-item" href="{{ route('subscription.cancel') }}">有料プラン解約</a>
@@ -80,7 +77,7 @@
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
                                     ログアウト
                                 </a>

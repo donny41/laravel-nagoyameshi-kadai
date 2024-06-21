@@ -13,6 +13,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Middleware\Subscribed;
 use App\Http\Middleware\NotSubscribed;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,13 +73,13 @@ Route::group(['middleware' => 'auth:web'], function () {
     // レビュー機能のうち一般ユーザー向け
     Route::get('/restaurants/{restaurant}/reviews', [ReviewController::class, 'index'])->name('restaurants.reviews.index');
 
-    // サブスク関連
+    // サブスクなし
     Route::group(['middleware' => 'not_subscribed'], function () {
         Route::get('/subscription/create', [SubscriptionController::class, 'create'])->name('subscription.create');
         Route::post('/subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
     });
 
-    // サブスク関連
+    // サブスクあり
     Route::group(['middleware' => 'subscribed'], function () {
         Route::get('/subscription/edit', [SubscriptionController::class, 'edit'])->name('subscription.edit');
         Route::patch('/subscription/update', [SubscriptionController::class, 'update'])->name('subscription.update');
@@ -92,5 +93,11 @@ Route::group(['middleware' => 'auth:web'], function () {
         Route::patch('/restaurants/{restaurant}/reviews/{review}', [ReviewController::class, 'update'])->name('restaurants.reviews.update');
         Route::delete('/restaurants/{restaurant}/reviews/{review}', [ReviewController::class, 'destroy'])->name('restaurants.reviews.destroy');
     
+        // 予約機能
+        Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/restaurants/{restaurant}/reservations/create', [ReservationController::class, 'create'])->name('restaurants.reservations.create');
+        Route::post('/restaurants/{restaurant}/reservations', [ReservationController::class, 'store'])->name('restaurants.reservations.store');
+        Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
     });
 });
