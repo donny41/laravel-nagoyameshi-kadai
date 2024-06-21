@@ -15,6 +15,9 @@ use App\Http\Middleware\NotSubscribed;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\CompanyController as User_Company_Cont;
+use App\Http\Controllers\TermController as User_Term_Cont;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,11 +57,14 @@ Route::group([
     Route::resource('terms', TermController::class);
 });
 
-// guest:adminの挙動: adminはadmin.homeへリダイレクト、それ以外はOK。
+// admin以外は全ユーザーが通れる
+// ※guest:adminの挙動: adminはadmin.homeへリダイレクト、それ以外はOK。
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/restaurants', [UR::class, 'index'])->name('restaurants.index');
     Route::get('/restaurants/{restaurant}', [UR::class, 'show'])->name('restaurants.show');
+    Route::get('/company', [User_Company_Cont::class, 'index'])->name('company.index');
+    Route::get('/terms', [User_Term_Cont::class, 'index'])->name('terms.index');
 });
 
 
@@ -102,9 +108,7 @@ Route::group(['middleware' => 'auth:web'], function () {
 
         // お気に入り機能
         Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
-        // Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
         Route::post('/restaurants/{restaurant}/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
         Route::delete('favorites/{favorite}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
-
     });
 });
