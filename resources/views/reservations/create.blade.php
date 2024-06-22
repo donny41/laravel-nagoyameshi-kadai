@@ -39,6 +39,7 @@
                     </div>
                 @endif
 
+
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
                         <a class="nav-link link-dark" href="{{ route('restaurants.show', $restaurant) }}">トップ</a>
@@ -58,6 +59,12 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
+                    </div>
+                @endif
+
+                @if (session('error_message'))
+                    <div class="alert alert-danger" role="alert">
+                        <p class="mb-0">{{ session('error_message') }}</p>
                     </div>
                 @endif
 
