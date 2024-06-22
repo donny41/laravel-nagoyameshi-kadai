@@ -57,8 +57,9 @@ Route::group([
     Route::resource('terms', TermController::class);
 });
 
-// admin以外は全ユーザーが通れる
+// admin以外が通れる
 // ※guest:adminの挙動: adminはadmin.homeへリダイレクト、それ以外はOK。
+// Route::group(['middleware' => 'guest:admin'], function () {
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/restaurants', [UR::class, 'index'])->name('restaurants.index');
@@ -69,7 +70,7 @@ Route::group(['middleware' => 'guest:admin'], function () {
 
 
 // auth:web = WEB（ユーザー）として認証のみ
-Route::group(['middleware' => 'auth:web'], function () {
+Route::group(['middleware' => ['auth:web','verified']], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::patch('/user/{user}', [UserController::class, 'update'])->name('user.update');
@@ -99,7 +100,7 @@ Route::group(['middleware' => 'auth:web'], function () {
         Route::get('/restaurants/{restaurant}/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('restaurants.reviews.edit');
         Route::patch('/restaurants/{restaurant}/reviews/{review}', [ReviewController::class, 'update'])->name('restaurants.reviews.update');
         Route::delete('/restaurants/{restaurant}/reviews/{review}', [ReviewController::class, 'destroy'])->name('restaurants.reviews.destroy');
-    
+
         // 予約機能
         Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
         Route::get('/restaurants/{restaurant}/reservations/create', [ReservationController::class, 'create'])->name('restaurants.reservations.create');
